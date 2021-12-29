@@ -13,6 +13,7 @@
   "author": "oatmealine",
   "license": "GPL-3.0-or-later",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "express-slow-down": "^1.4.0"
   }
 }

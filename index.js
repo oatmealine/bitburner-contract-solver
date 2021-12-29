@@ -1,23 +1,33 @@
 const express = require('express');
+const slowDown = require('express-slow-down');
 const app = express();
 const port = 2529;
+
+app.enable('trust proxy');
+
+const speedLimiter = slowDown({
+	windowMs: 20 * 1000, // 20s
+	delayAfter: 18,
+	delayMs: 500
+});
+app.use(speedLimiter);
 
 let handlers = {};
 let cache = {};
 
 function convert2DArrayToString(arr) {
-  const components = [];
-  arr.forEach((e) => {
-    let s = e.toString();
-    s = ["[", s, "]"].join("");
-    components.push(s);
-  });
+	const components = [];
+	arr.forEach((e) => {
+		let s = e.toString();
+		s = ["[", s, "]"].join("");
+		components.push(s);
+	});
 
-  return components.join(",").replace(/\s/g, "");
+	return components.join(",").replace(/\s/g, "");
 }
 
 handlers['Subarray with Maximum Sum'] = (input) => {
-	let nums = input.split(',').map(n => Number(n));
+	let nums = JSON.parse(input);
 	if (nums.find(isNaN)) throw Error('one of the numbers provided is not a number');
 	if (nums.length > 40) throw Error('the game can only generate inputs up to 40 numbers, silly');
 	if (nums.length < 5) throw Error('the game can only generate inputs with more than 4 numbers, silly');
@@ -26,7 +36,7 @@ handlers['Subarray with Maximum Sum'] = (input) => {
 		nums[i] = Math.max(nums[i], nums[i] + nums[i - 1]);
 	}
 	
-	return Math.max(...nums);
+	return Math.max(...nums).toString();
 }
 
 handlers['Find Largest Prime Factor'] = (input) => {
@@ -44,7 +54,7 @@ handlers['Find Largest Prime Factor'] = (input) => {
 		++fac;
 	}
 
-	return (n === 1 ? fac - 1 : n);
+	return (n === 1 ? fac - 1 : n).toString();
 }
 
 handlers['Total Ways to Sum'] = (input) => {
@@ -62,7 +72,7 @@ handlers['Total Ways to Sum'] = (input) => {
 		}
 	}
 
-	return ways[num];
+	return ways[num].toString();
 }
 
 handlers['Spiralize Matrix'] = (input) => {
@@ -73,6 +83,9 @@ handlers['Spiralize Matrix'] = (input) => {
 
 	const m = data.length;
 	const n = data[0].length;
+	
+	if (m > 15) throw new Error('the game can only generate a height up to 15, silly');
+	if (n > 15) throw new Error('the game can only generate a width up to 15, silly');
 
 	for (const row of data) {
 		if (row.length !== n) throw new Error('not a rectangle');
@@ -128,6 +141,9 @@ handlers['Spiralize Matrix'] = (input) => {
 handlers['Array Jumping Game'] = (input) => {
 	let data = JSON.parse(input);
 	if (data.find(isNaN)) throw Error('one of the numbers provided is not a number');
+	if (nums.length > 25) throw Error('the game can only generate inputs up to 25 numbers, silly');
+	if (nums.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
+
 	const n = data.length;
 	let i = 0;
 	for (let reach = 0; i < n && i <= reach; ++i) {
@@ -143,6 +159,8 @@ handlers['Merge Overlapping Intervals'] = (input) => {
 
 	if (!data[0]) throw new Error('no elems in array');
 	if (!data[0][0]) throw new Error('not a 2d array');
+	if (data.length > 20) throw Error('the game can only generate inputs up to 20 numbers, silly');
+	if (data.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
 
 	const intervals = data.slice();
 	intervals.sort((a, b) => {
@@ -195,6 +213,8 @@ handlers['Generate IP Addresses'] = (input) => {
 
 handlers['Algorithmic Stock Trader I'] = (input) => {
 	let data = JSON.parse(input);
+	if (data.length > 50) throw Error('the game can only generate inputs up to 50 numbers, silly');
+	if (data.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
 	if (data.find(isNaN)) throw Error('one of the numbers provided is not a number');
 
 	let maxCur = 0;
@@ -209,6 +229,8 @@ handlers['Algorithmic Stock Trader I'] = (input) => {
 
 handlers['Algorithmic Stock Trader II'] = (input) => {
 	let data = JSON.parse(input);
+	if (data.length > 50) throw Error('the game can only generate inputs up to 50 numbers, silly');
+	if (data.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
 	if (data.find(isNaN)) throw Error('one of the numbers provided is not a number');
 
 	let profit = 0;
@@ -221,6 +243,8 @@ handlers['Algorithmic Stock Trader II'] = (input) => {
 
 handlers['Algorithmic Stock Trader III'] = (input) => {
 	let data = JSON.parse(input);
+	if (data.length > 50) throw Error('the game can only generate inputs up to 50 numbers, silly');
+	if (data.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
 	if (data.find(isNaN)) throw Error('one of the numbers provided is not a number');
 
 	let hold1 = Number.MIN_SAFE_INTEGER;
@@ -243,6 +267,10 @@ handlers['Algorithmic Stock Trader IV'] = (input) => {
 	if (isNaN(data[0])) throw Error('one of the numbers provided is not a number');
 	if (typeof data[1] !== 'object') throw Error('invalid array format');
 	if (data[1].find(isNaN)) throw Error('one of the numbers provided is not a number');
+	if (data[1].length > 50) throw Error('the game can only generate inputs up to 50 numbers, silly');
+	if (data[1].length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
+	if (data[0] > 10) throw Error('k can only be smaller than 11');
+	if (data[0] < 2) throw Error('k can only be bigger than 1');
 
 	const k = data[0];
 	const prices = data[1];
@@ -283,6 +311,8 @@ handlers['Algorithmic Stock Trader IV'] = (input) => {
 
 handlers['Minimum Path Sum in a Triangle'] = (input) => {
 	let data = JSON.parse(input);
+	if (data.length > 12) throw Error('the game can only generate inputs up to 12 levels, silly');
+	if (data.length < 3) throw Error('the game can only generate inputs with more than 2 levels, silly');
 
 	const n = data.length;
 	const dp = data[n - 1].slice();
@@ -297,6 +327,11 @@ handlers['Minimum Path Sum in a Triangle'] = (input) => {
 
 handlers['Unique Paths in a Grid I'] = (input) => {
 	let data = JSON.parse(input);
+	if (data.length !== 2) throw Error('invalid array length');
+	if (data[0] > 14) throw Error('the game can only generate up to 14 rows, silly');
+	if (data[0] < 2) throw Error('the game can only generate from 2 rows, silly');
+	if (data[1] > 14) throw Error('the game can only generate up to 14 columns, silly');
+	if (data[1] < 2) throw Error('the game can only generate from 2 columns, silly');
 
 	const n = data[0]; // Number of rows
 	const m = data[1]; // Number of columns
@@ -317,6 +352,17 @@ handlers['Unique Paths in a Grid I'] = (input) => {
 
 handlers['Unique Paths in a Grid II'] = (input) => {
 	let data = JSON.parse(input);
+
+	if (!data[0]) throw new Error('no elems in array');
+	if (!data[0][0]) throw new Error('not a 2d array');
+
+	const m = data.length;
+	const n = data[0].length;
+	
+	if (m > 12) throw new Error('the game can only generate a height up to 15, silly');
+	if (n > 12) throw new Error('the game can only generate a width up to 15, silly');
+	if (m < 2) throw new Error('the game can only generate a height from 2, silly');
+	if (n < 2) throw new Error('the game can only generate a width from 2, silly');
 
 	const obstacleGrid = [];
 	obstacleGrid.length = data.length;
@@ -342,6 +388,9 @@ handlers['Unique Paths in a Grid II'] = (input) => {
 handlers['Sanitize Parentheses in Expression'] = (input) => {
 	let data = input;
 	if (data.length > 20) throw Error('the game can only generate inputs up to 20, silly');
+	if (data.length < 7) throw Error('the game can only generate inputs from 6, silly');
+	
+	if (data.split('').filter(c => c !== '(' && c !== ')' && c !== 'a').length > 0) throw Error('theres weird shit (non (, ), a characters) in ur array');
 
 	let left = 0;
 	let right = 0;
@@ -388,6 +437,12 @@ handlers['Sanitize Parentheses in Expression'] = (input) => {
 
 handlers['Find All Valid Math Expressions'] = (input) => {
 	let data = JSON.parse(input);
+	
+	if (data.length !== 2) throw Error('invalid array length');
+	if (data[0].length < 4) throw Error('string length invalid i cant be bothered to write more error messages sorry sdjghkjasdg');
+	if (data[0].length > 12) throw Error('string length invalid i cant be bothered to write more error messages sorry sdjghkjasdg');
+	if (data[1] < -100) throw Error('the game can only generate a target larger than -100, silly');
+	if (data[1] > 100) throw Error('the game can only generate a target smaller than 100, silly');
 
 	const num = data[0];
 	const target = data[1];
