@@ -167,7 +167,7 @@ handlers['Merge Overlapping Intervals'] = (input) => {
 }
 
 handlers['Generate IP Addresses'] = (input) => {
-	let data = input;
+	let data = JSON.parse(input);
 	const ret = [];
 	for (let a = 1; a <= 3; ++a) {
 		for (let b = 1; b <= 3; ++b) {
@@ -453,7 +453,6 @@ app.get('/bitburnercontracts', async (req, res) => {
 			}
 		}
 
-		//console.log(solution);
 		res.send({
 			type: type,
 			input: input,
