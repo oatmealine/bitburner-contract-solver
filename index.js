@@ -40,7 +40,7 @@ handlers['Subarray with Maximum Sum'] = (input) => {
 }
 
 handlers['Find Largest Prime Factor'] = (input) => {
-	let num = Number(input);
+	let num = JSON.parse(input);
 	if (isNaN(num)) throw Error('not a number');
 	if (num > 1e9) throw Error('the game can only generate inputs up to 1e9, silly');
 	if (num < 500) throw Error('the game can only generate inputs from 500, silly');
@@ -58,7 +58,7 @@ handlers['Find Largest Prime Factor'] = (input) => {
 }
 
 handlers['Total Ways to Sum'] = (input) => {
-	let num = Number(input);
+	let num = JSON.parse(input);
 	if (isNaN(num)) throw Error('not a number');
 	if (num > 100) throw Error('the game can only generate inputs up to 100, silly');
 	if (num < 8) throw Error('the game can only generate inputs from 8, silly');
@@ -384,7 +384,7 @@ handlers['Unique Paths in a Grid II'] = (input) => {
 
 	return obstacleGrid[obstacleGrid.length - 1][obstacleGrid[0].length - 1].toString();
 }
-/*
+
 handlers['Sanitize Parentheses in Expression'] = (input) => {
 	let data = JSON.parse(input);
 	if (data.length > 20) throw Error('the game can only generate inputs up to 20, silly');
@@ -432,9 +432,8 @@ handlers['Sanitize Parentheses in Expression'] = (input) => {
 
 	dfs(0, 0, left, right, data, "", res);
 
-	return JSON.stringify(res);
+	return JSON.stringify(res).replaceAll('"','');
 }
-*/
 
 handlers['Find All Valid Math Expressions'] = (input) => {
 	let data = JSON.parse(input);
