@@ -141,8 +141,8 @@ handlers['Spiralize Matrix'] = (input) => {
 handlers['Array Jumping Game'] = (input) => {
 	let data = JSON.parse(input);
 	if (data.find(isNaN)) throw Error('one of the numbers provided is not a number');
-	if (nums.length > 25) throw Error('the game can only generate inputs up to 25 numbers, silly');
-	if (nums.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
+	if (data.length > 25) throw Error('the game can only generate inputs up to 25 numbers, silly');
+	if (data.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
 
 	const n = data.length;
 	let i = 0;
