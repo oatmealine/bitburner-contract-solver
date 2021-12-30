@@ -78,8 +78,8 @@ handlers['Total Ways to Sum'] = (input) => {
 handlers['Spiralize Matrix'] = (input) => {
 	let data = JSON.parse(input);
 
-	if (data[0] !== undefined) throw new Error('no elems in array');
-	if (data[0][0] !== undefined) throw new Error('not a 2d array');
+	if (data[0] === undefined) throw new Error('no elems in array');
+	if (data[0][0] === undefined) throw new Error('not a 2d array');
 
 	const m = data.length;
 	const n = data[0].length;
@@ -157,8 +157,8 @@ handlers['Array Jumping Game'] = (input) => {
 handlers['Merge Overlapping Intervals'] = (input) => {
 	let data = JSON.parse(input);
 
-	if (data[0] !== undefined) throw new Error('no elems in array');
-	if (data[0][0] !== undefined) throw new Error('not a 2d array');
+	if (data[0] === undefined) throw new Error('no elems in array');
+	if (data[0][0] === undefined) throw new Error('not a 2d array');
 	if (data.length > 20) throw Error('the game can only generate inputs up to 20 numbers, silly');
 	if (data.length < 3) throw Error('the game can only generate inputs with more than 2 numbers, silly');
 
@@ -353,8 +353,8 @@ handlers['Unique Paths in a Grid I'] = (input) => {
 handlers['Unique Paths in a Grid II'] = (input) => {
 	let data = JSON.parse(input);
 
-	if (data[0] !== undefined) throw new Error('no elems in array');
-	if (data[0][0] !== undefined) throw new Error('not a 2d array');
+	if (data[0] === undefined) throw new Error('no elems in array');
+	if (data[0][0] === undefined) throw new Error('not a 2d array');
 
 	const m = data.length;
 	const n = data[0].length;
