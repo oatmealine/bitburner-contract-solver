@@ -388,7 +388,7 @@ handlers['Unique Paths in a Grid II'] = (input) => {
 handlers['Sanitize Parentheses in Expression'] = (input) => {
 	let data = JSON.parse(input);
 	if (data.length > 20) throw Error('the game can only generate inputs up to 20, silly');
-	if (data.length < 7) throw Error('the game can only generate inputs from 6, silly');
+	if (data.length < 6) throw Error('the game can only generate inputs from 5, silly');
 	
 	if (data.split('').filter(c => c !== '(' && c !== ')' && c !== 'a').length > 0) throw Error('theres weird shit (non (, ), a characters) in ur array');
 
